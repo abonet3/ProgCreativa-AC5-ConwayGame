@@ -1,61 +1,204 @@
-:root {
-  --text-color: #ffd700;
-  --bg-color: #0f0f23;
+/* Layout global */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  background: var(--bg-color);
-  color: var(--text-color);
-  font-family: monospace;
-  overflow: hidden; /* Evitar scroll en movil */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background-color: #0b0b10;
+  color: #f5f5f5;
+}
+
+#app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Contenidor del canvas de p5 */
+
+#canvas-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top left, #1c2140, #050509);
+}
+
+/* Panell lateral de control */
+
+#ui-panel {
+  width: 340px;
+  padding: 20px 18px;
+  background-color: #101018;
+  border-left: 1px solid #24243a;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  height: 100vh;
+  gap: 16px;
+  overflow-y: auto;
 }
 
-form {
-  z-index: 10;
-  padding: 10px;
-  background: rgba(0,0,0,0.5);
-  border-radius: 0 0 10px 10px;
-  margin-bottom: 10px;
+#ui-panel h1 {
+  font-size: 1.6rem;
+  margin-bottom: 4px;
 }
 
-/* Overlay para el botón de inicio */
-#overlay {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(15, 15, 35, 0.9);
-  z-index: 20;
-  transition: opacity 0.5s;
+.subtitle {
+  font-size: 0.9rem;
+  color: #bbbbd5;
 }
 
-button {
-  font-family: monospace;
-  font-size: 1.2rem;
-  padding: 20px 30px;
-  background: #ffd700;
-  color: #0f0f23;
+section {
+  border-radius: 8px;
+  padding: 10px 12px;
+  background-color: #151521;
+  border: 1px solid #262642;
+}
+
+section h2 {
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+/* Botons generals */
+
+.controls button {
+  margin: 4px 4px 4px 0;
+  padding: 6px 10px;
+  border-radius: 6px;
   border: none;
-  border-radius: 50px;
+  background-color: #2f39ff;
+  color: #ffffff;
+  font-size: 0.85rem;
   cursor: pointer;
-  font-weight: bold;
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  transition: transform 0.08s ease, background-color 0.15s ease;
 }
 
-button:active {
-  transform: scale(0.95);
+.controls button:hover {
+  background-color: #4953ff;
+  transform: translateY(-1px);
 }
 
-canvas {
-  display: block;
-  border: 2px solid #333;
-  border-radius: 1em;
-  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+.controls button:active {
+  transform: translateY(1px);
+}
+
+#play-pause-btn.playing {
+  background-color: #ffb300;
+}
+
+/* Slider de velocitat */
+
+.slider-label {
+  display: flex;
+  flex-direction: column;
+  margin-top: 6px;
+  font-size: 0.85rem;
+}
+
+#speed-slider {
+  margin-top: 4px;
+}
+
+/* Opcions de pinzell (equips) */
+
+.brush-options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+}
+
+.brush-options label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Menú de peces predefinides */
+
+.piece-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.piece-btn {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #34345a;
+  background-color: #171727;
+  color: #f0f0ff;
+  cursor: pointer;
+  transition: background-color 0.12s ease, transform 0.08s ease,
+    border-color 0.12s ease;
+}
+
+.piece-btn:hover {
+  background-color: #232344;
+  transform: translateY(-1px);
+}
+
+.piece-btn.active {
+  background-color: #2f39ff;
+  border-color: #8da2ff;
+}
+
+.small-note {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: #c6c6df;
+}
+
+/* Instruccions */
+
+.instructions ul {
+  margin-left: 16px;
+  margin-top: 4px;
+  font-size: 0.85rem;
+}
+
+.instructions li {
+  margin-bottom: 4px;
+}
+
+.instructions .note {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: #c6c6df;
+}
+
+/* Estadístiques */
+
+.info p {
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+
+.info span {
+  font-weight: 600;
+}
+
+/* Responsiu */
+
+@media (max-width: 800px) {
+  #app {
+    flex-direction: column;
+  }
+
+  #ui-panel {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid #24243a;
+  }
+
+  #canvas-container {
+    min-height: 50vh;
+  }
 }

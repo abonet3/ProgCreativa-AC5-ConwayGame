@@ -1,31 +1,166 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>AC3 - Groan Tube Simulator</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Team Life - Conway Game of Life with Factions</title>
+
     <link rel="stylesheet" href="styles.css" />
+
+    <!-- p5.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js"></script>
   </head>
   <body>
-    
-    <form>
-      <label>
-        <input type="checkbox" id="invertX" /> Invertir X
-      </label>
-      <label>
-        <input type="checkbox" id="invertY" /> Invertir Y
-      </label>
-    </form>
+    <div id="app">
+      <div id="canvas-container"></div>
 
-    <div id="overlay">
-        <button id="permissionButton">ACTIVAR SONIDO Y MOVIMIENTO</button>
+      <aside id="ui-panel">
+        <h1>Team Life</h1>
+        <p class="subtitle">
+          Conway's Game of Life turned into a four-faction territory battle.
+        </p>
+
+        <section class="controls">
+          <h2>Simulation</h2>
+          <button id="play-pause-btn">Play</button>
+          <button id="step-btn">Step</button>
+          <button id="random-btn">Random</button>
+          <button id="clear-btn">Clear</button>
+
+          <label for="speed-slider" class="slider-label">
+            Speed
+            <input
+              type="range"
+              id="speed-slider"
+              min="1"
+              max="20"
+              value="10"
+            />
+          </label>
+        </section>
+
+        <section class="controls">
+          <h2>Teams</h2>
+          <div class="brush-options">
+            <label>
+              <input
+                type="radio"
+                name="brush-team"
+                value="1"
+                checked
+              />
+              Team 1 (Blue) · Top-left
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="brush-team"
+                value="2"
+              />
+              Team 2 (Red) · Top-right
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="brush-team"
+                value="3"
+              />
+              Team 3 (Yellow) · Bottom-left
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="brush-team"
+                value="4"
+              />
+              Team 4 (Green) · Bottom-right
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="brush-team"
+                value="0"
+              />
+              Eraser
+            </label>
+          </div>
+        </section>
+
+        <section class="controls">
+          <h2>Pieces</h2>
+          <div class="piece-menu">
+            <button data-piece="none" class="piece-btn active">
+              Single cell
+            </button>
+            <button data-piece="block" class="piece-btn">
+              Block (wall)
+            </button>
+            <button data-piece="glider" class="piece-btn">
+              Glider (light attack)
+            </button>
+            <button data-piece="lws" class="piece-btn">
+              LWS (heavy attack)
+            </button>
+            <button data-piece="loaf" class="piece-btn">
+              Loaf (shield)
+            </button>
+          </div>
+          <p class="small-note">
+            Pieces can only be placed inside your team's quadrant.
+          </p>
+        </section>
+
+        <section class="info">
+          <h2>Stats</h2>
+          <p>
+            Generation:
+            <span id="generation-counter">0</span>
+          </p>
+          <p>
+            Team 1 (Blue):
+            <span id="team1-count">0</span>
+            (<span id="team1-percent">0</span>%)
+          </p>
+          <p>
+            Team 2 (Red):
+            <span id="team2-count">0</span>
+            (<span id="team2-percent">0</span>%)
+          </p>
+          <p>
+            Team 3 (Yellow):
+            <span id="team3-count">0</span>
+            (<span id="team3-percent">0</span>%)
+          </p>
+          <p>
+            Team 4 (Green):
+            <span id="team4-count">0</span>
+            (<span id="team4-percent">0</span>%)
+          </p>
+        </section>
+
+        <section class="instructions">
+          <h2>How to play</h2>
+          <ul>
+            <li>Select a team in the Teams section.</li>
+            <li>Select a piece (or Single cell) in the Pieces menu.</li>
+            <li>
+              Click on the grid inside your quadrant to place cells or pieces.
+            </li>
+            <li>Press Play to start the simulation.</li>
+            <li>Use Random to generate a new battlefield.</li>
+            <li>Use Step to advance one generation at a time.</li>
+          </ul>
+          <p class="note">
+            Birth, survival and death follow Conway's original rules.
+            The team of each newborn cell is decided by the majority
+            among its alive neighbours.
+          </p>
+        </section>
+      </aside>
     </div>
-
-    <main>
-        <div id="canvas-container"></div>
-    </main>
 
     <script src="sketch.js"></script>
   </body>
